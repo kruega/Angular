@@ -1,0 +1,48 @@
+<div *ngIf="!showSummary">
+    <form novalidate [formGroup]="questionsForm"
+          (ngSubmit)="saveForm(questionsForm.value)">
+  
+      <div *ngFor="let question of questions">
+        <div class="form-group" [ngSwitch]="question.type">
+          <label>{{question.text}}
+            <span *ngIf="question.required"> *</span>
+          </label>
+          <div *ngSwitchCase="'TEXT'">
+            <input type="text" class="form-control"
+                   [formControlName]="question.id"/>
+          </div>
+          <div *ngSwitchCase="'LONGTEXT'">
+          <textarea class="form-control" [formControlName]="question.id">
+          </textarea>
+          </div>
+          <div *ngSwitchCase="'CHOICE'">
+            <select class="form-control" [formControlName]="question.id">
+              <option value=""> --- Bitte wählen ---</option>
+              <option *ngFor="let choice of question.choices" [value]="choice">{{choice}}</option>
+            </select>
+          </div>
+          <pjm-show-error [path]="question.id" text="Dies"></pjm-show-error>
+        </div>
+      </div>
+  
+      <button type="submit"
+              class="btn btn-default"
+              [disabled]="!questionsForm.valid">
+        Antworten absenden
+      </button>
+  
+    </form>
+  </div>
+  <div *ngIf="showSummary">
+    <p class="bg-success">
+      Vielen Dank für die Beantwortung unseres Fragebogens.
+      Hier ist noch mal eine Zusammenfassung Ihrer Antworten:
+    </p>
+    <div *ngFor="let answer of answerSummary" class="answer">
+      <label>{{answer.text}}</label>
+      <span>{{answer.answer}}</span>
+    </div>
+    <button class="btn btn-default" (click)="backToForm()">
+      Zurück zur Eingabe
+    </button>
+  </div>

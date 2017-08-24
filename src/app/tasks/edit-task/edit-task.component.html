@@ -1,0 +1,9 @@
+<button class="btn btn-default"
+[routerLink]="task.id ? '../..' : '..'">
+Zurück zur Task-Liste
+</button>
+
+<button (click)="cancel()"
+    class="btn btn-default">
+    Abbrechen
+</button>
